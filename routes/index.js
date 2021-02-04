@@ -1,14 +1,18 @@
 const express = require("express");
 const messages = require("../messages");
+
 const router = express.Router();
+
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Mini Message Board", message: messages });
   next();
 });
+
 router.get("/new", function (req, res, next) {
   res.render("new", { title: "New Message" });
   next();
 });
+
 router.post("/new", (req, res) => {
   const newmsg = {
     ...req.body,
@@ -20,7 +24,6 @@ router.post("/new", (req, res) => {
   }
 
   messages.push(newmsg);
-  //res.json(messages);
   res.redirect("/");
 });
 
