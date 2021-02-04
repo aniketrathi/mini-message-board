@@ -1,9 +1,27 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const messages = require("../messages");
+const router = express.Router();
+router.get("/", function (req, res, next) {
+  res.render("index", { title: "Mini Message Board", message: messages });
+  next();
+});
+router.get("/new", function (req, res, next) {
+  res.render("new", { title: "New Message" });
+  next();
+});
+router.post("/new", (req, res) => {
+  const newmsg = {
+    ...req.body,
+    added: new Date(),
+  };
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  if (!newmsg.user || !newmsg.text) {
+    return res.status(400).json({ msg: "Please include a name and text" });
+  }
+
+  messages.push(newmsg);
+  //res.json(messages);
+  res.redirect("/");
 });
 
 module.exports = router;
